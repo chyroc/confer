@@ -141,26 +141,6 @@ func (r *tagParser) findRune(isKey bool, rs ...rune) error {
 	return nil
 }
 
-func (r *tagParser) nextRune(ru rune) (resp []rune, err error) {
-	for r.idx < len(r.data) {
-		switch data := r.data[r.idx]; data {
-		case '\\':
-			r.idx++
-			if r.idx < len(r.data) {
-				resp = append(resp, r.data[r.idx])
-				r.idx++
-			}
-		case ru:
-			r.idx++
-			return resp, nil
-		default:
-			r.idx++
-			resp = append(resp, data)
-		}
-	}
-	return resp, nil
-}
-
 func (r *tagParser) removeSpace() (n int) {
 	for i := r.idx; i < len(r.data); i++ {
 		if r.data[i] != ' ' {
