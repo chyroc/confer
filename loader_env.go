@@ -3,6 +3,8 @@ package confer
 import (
 	"fmt"
 	"os"
+
+	"github.com/chyroc/confer/internal"
 )
 
 type loaderEnv struct{}
@@ -17,8 +19,24 @@ func (r *loaderEnv) Name() string {
 
 // Load impl Loader for `env`
 func (r *loaderEnv) Load(args []string) (string, error) {
-	if len(args) != 1 {
-		return "", fmt.Errorf("env loader expect one args")
+	// 1 or 2
+	if len(args) != 1 && len(args) != 2 {
+		return "", fmt.Errorf("env loader expect one or two args")
 	}
-	return os.Getenv(args[0]), nil
+
+	val := os.Getenv(args[0])
+
+	if len(args) == 2 {
+		a, b, err := internal.ParseAEqualB(args[1])
+		if a != "default" {
+			return "", fmt.Errorf("env loader second args expect default=<val>")
+		}
+		if err != nil {
+			return "", err
+		}
+		if val == "" {
+			val = b
+		}
+	}
+	return val, nil
 }

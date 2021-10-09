@@ -22,9 +22,13 @@ func Test_loaderEnv(t *testing.T) {
 	}{
 		{name: "ok-1", args: []string{"a"}, want: "val-a"},
 		{name: "ok-2", args: []string{"b"}, want: ""},
+		{name: "ok-3", args: []string{"b", "default=x"}, want: "x"},
+		{name: "ok-4", args: []string{"b", "default = x"}, want: "x"},
+		{name: "ok-5", args: []string{"b", "default = ' x '"}, want: " x "},
 
-		{name: "err-1", args: []string{}, errContain: "env loader expect one args"},
-		{name: "err-2", args: []string{"a", "b"}, errContain: "env loader expect one args"},
+		{name: "err-1", args: []string{}, errContain: "env loader expect one or two args"},
+		{name: "err-2", args: []string{"a", "b", "c"}, errContain: "env loader expect one or two args"},
+		{name: "err-3", args: []string{"a", "b"}, errContain: "env loader second args expect default=<val>"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

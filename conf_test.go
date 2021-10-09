@@ -8,7 +8,10 @@ import (
 )
 
 type Conf1 struct {
-	A string `conf:"env,CONFER_A"`
+	A          string `conf:"env,CONFER_A"`
+	B_Default1 string `conf:"env,CONFER_B,default=x"`
+	B_Default2 string `conf:"env,CONFER_B,default = x "`
+	B_Default3 string `conf:"env,CONFER_B,default = ' x ' "`
 }
 
 func Test_Load(t *testing.T) {
@@ -25,12 +28,22 @@ func Test_Load(t *testing.T) {
 		{name: "err-1", args: 1, errContain: "source need to be a pointer to a struct"},
 		{name: "err-2", args: Conf1{}, errContain: "source need to be a pointer to a struct"},
 
-		{name: "ok-1", args: &Conf1{}, want: &Conf1{}},
+		{name: "ok-1", args: &Conf1{}, want: &Conf1{
+			A:          "",
+			B_Default1: "x",
+			B_Default2: "x",
+			B_Default3: " x ",
+		}},
 		{name: "ok-2", setup: func() {
 			os.Setenv("CONFER_A", "a")
 		}, distroy: func() {
 			os.Setenv("CONFER_A", "")
-		}, args: &Conf1{}, want: &Conf1{A: "a"}},
+		}, args: &Conf1{}, want: &Conf1{
+			A:          "a",
+			B_Default1: "x",
+			B_Default2: "x",
+			B_Default3: " x ",
+		}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

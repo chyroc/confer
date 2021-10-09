@@ -101,13 +101,11 @@ func (r *tagParser) parseString() (string, error) {
 			r.idx++
 		case quoteFound && d == quoteRune:
 			r.idx++
-			return string(res), nil
-		case !quoteFound && d == ' ':
-			return string(res), nil
-		case d == ',':
-			return string(res), nil
-		case d == ';':
-			return string(res), nil
+			return string(res), nil // 不能 trim-space
+		// case !quoteFound && d == ' ':
+		// 	return string(res), nil
+		case !quoteFound && (d == ',' || d == ';'):
+			return strings.TrimSpace(string(res)), nil
 		default:
 			res = append(res, r.data[r.idx])
 			r.idx++
@@ -116,7 +114,7 @@ func (r *tagParser) parseString() (string, error) {
 	if quoteFound {
 		return "", fmt.Errorf("expect end with quota(%s)", string([]rune{quoteRune}))
 	}
-	return string(res), nil
+	return strings.TrimSpace(string(res)), nil
 }
 
 func (r *tagParser) findRune(isKey bool, rs ...rune) error {
