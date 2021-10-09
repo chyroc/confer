@@ -3,18 +3,16 @@ package confer
 import (
 	"fmt"
 	"strings"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
-type loadConf struct {
+type tagConf struct {
 	loaderName   string
 	loaderArgs   []string
 	transferName string
 	transferArgs []string
 }
 
-func parseLoadConf(tag string) (*loadConf, error) {
+func parseTagConf(tag string) (*tagConf, error) {
 	tag = strings.TrimSpace(tag)
 	if tag == "" {
 		return nil, fmt.Errorf("tag conf can not be empty")
@@ -29,7 +27,7 @@ type tagParser struct {
 }
 
 // load-name,a1,a2;trans-name,a3,a4
-func (r *tagParser) parse() (resp *loadConf, err error) {
+func (r *tagParser) parse() (resp *tagConf, err error) {
 	parseKeyArgs := func() (key string, args []string, err error) {
 		key, err = r.parseString()
 		if err != nil {
@@ -47,7 +45,7 @@ func (r *tagParser) parse() (resp *loadConf, err error) {
 		}
 		return key, args, nil
 	}
-	resp = new(loadConf)
+	resp = new(tagConf)
 	r.removeSpace()
 
 	// loader
@@ -55,8 +53,6 @@ func (r *tagParser) parse() (resp *loadConf, err error) {
 	if err != nil {
 		return nil, err
 	}
-
-	spew.Dump(resp)
 
 	// split loader and transfer with `;`
 	if err := r.findRune(true, ';'); err == nil {
