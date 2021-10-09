@@ -17,17 +17,4 @@ go get github.com/chyroc/confer
 
 ## Usage
 
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/chyroc/confer"
-)
-
-func main() {
-	res := go_project_template.Incr(1)
-	fmt.Println(res) // output: 2
-}
-```
+- [load_env](./_examples/load_env/main.go): load from env
