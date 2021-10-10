@@ -3,6 +3,8 @@ package confer
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/chyroc/confer/internal/loader"
 )
 
 // Load get data, and assign to source
@@ -12,7 +14,7 @@ func Load(source interface{}, options ...ImplOption) error {
 	r := &Impl{loader: map[string]Loader{}, transfer: map[string]Transfer{}}
 
 	// default
-	r.loader["env"] = newLoaderEnv()
+	r.loader["env"] = loader.NewEnv()
 
 	for _, v := range options {
 		if err := v(r); err != nil {

@@ -1,4 +1,4 @@
-package internal
+package helper
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// parse a=b
 func Test_parseAEqualB(t *testing.T) {
 	as := assert.New(t)
 
@@ -23,6 +24,7 @@ func Test_parseAEqualB(t *testing.T) {
 		{name: "ok-3", args: ` 1 = 2 `, want: []string{"1", "2"}},
 		{name: "ok-4", args: `1='2'`, want: []string{"1", "2"}},
 		{name: "ok-5", args: `1 = ' 2 ' `, want: []string{"1", " 2 "}},
+		{name: "ok-5", args: ` ' 1 ' = ' 2 ' `, want: []string{" 1 ", " 2 "}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

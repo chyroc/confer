@@ -1,4 +1,4 @@
-package internal
+package helper
 
 import (
 	"fmt"
@@ -94,7 +94,7 @@ func (r *aequalbParser) findRune(isKey bool, rs ...rune) error {
 			c++
 			continue
 		}
-		return fmt.Errorf("expect: %s, but got: %s", string(rs), string(r.data[r.idx:min(r.idx+len(rs), len(r.data))]))
+		return fmt.Errorf("expect: %s, but got: %s", string(rs), string(r.data[r.idx:Min(r.idx+len(rs), len(r.data))]))
 	}
 	r.idx += c
 	if isKey {
@@ -112,11 +112,4 @@ func (r *aequalbParser) removeSpace() (n int) {
 		n++
 	}
 	return
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

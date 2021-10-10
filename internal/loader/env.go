@@ -1,24 +1,24 @@
-package confer
+package loader
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/chyroc/confer/internal"
+	"github.com/chyroc/confer/internal/helper"
 )
 
-type loaderEnv struct{}
+type Env struct{}
 
-func newLoaderEnv() Loader {
-	return &loaderEnv{}
+func NewEnv() *Env {
+	return &Env{}
 }
 
-func (r *loaderEnv) Name() string {
+func (r *Env) Name() string {
 	return "env"
 }
 
 // Load impl Loader for `env`
-func (r *loaderEnv) Load(args []string) (string, error) {
+func (r *Env) Load(args []string) (string, error) {
 	// 1 or 2
 	if len(args) != 1 && len(args) != 2 {
 		return "", fmt.Errorf("env loader expect one or two args")
@@ -27,7 +27,7 @@ func (r *loaderEnv) Load(args []string) (string, error) {
 	val := os.Getenv(args[0])
 
 	if len(args) == 2 {
-		a, b, err := internal.ParseAEqualB(args[1])
+		a, b, err := helper.ParseAEqualB(args[1])
 		if a != "default" {
 			return "", fmt.Errorf("env loader second args expect default=<val>")
 		}

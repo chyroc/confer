@@ -1,4 +1,4 @@
-package confer
+package loader
 
 import (
 	"os"
@@ -10,7 +10,7 @@ import (
 func Test_loaderEnv(t *testing.T) {
 	as := assert.New(t)
 
-	as.Equal("env", newLoaderEnv().Name())
+	as.Equal("env", NewEnv().Name())
 
 	os.Setenv("a", "val-a")
 
@@ -32,7 +32,7 @@ func Test_loaderEnv(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := newLoaderEnv()
+			r := NewEnv()
 			got, err := r.Load(tt.args)
 			if tt.errContain != "" {
 				as.NotNil(err)

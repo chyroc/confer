@@ -3,6 +3,8 @@ package confer
 import (
 	"fmt"
 	"strings"
+
+	"github.com/chyroc/confer/internal/helper"
 )
 
 type tagConf struct {
@@ -130,7 +132,7 @@ func (r *tagParser) findRune(isKey bool, rs ...rune) error {
 			c++
 			continue
 		}
-		return fmt.Errorf("expect: %s, but got: %s", string(rs), string(r.data[r.idx:min(r.idx+len(rs), len(r.data))]))
+		return fmt.Errorf("expect: %s, but got: %s", string(rs), string(r.data[r.idx:helper.Min(r.idx+len(rs), len(r.data))]))
 	}
 	r.idx += c
 	if isKey {
@@ -148,11 +150,4 @@ func (r *tagParser) removeSpace() (n int) {
 		n++
 	}
 	return
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
