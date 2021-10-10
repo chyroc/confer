@@ -8,10 +8,10 @@ import (
 )
 
 type Conf1 struct {
-	A          string `loader:"env,CONFER_A"`
-	B_Default1 string `loader:"env,CONFER_B,default=x"`
-	B_Default2 string `loader:"env,CONFER_B,default = x "`
-	B_Default3 string `loader:"env,CONFER_B,default = ' x ' "`
+	A          string `loader:"env,KEY_A"`
+	B_Default1 string `loader:"env,KEY_B,default=x"`
+	B_Default2 string `loader:"env,KEY_B,default = x "`
+	B_Default3 string `loader:"env,KEY_B,default = ' x ' "`
 }
 
 func Test_Load(t *testing.T) {
@@ -35,9 +35,9 @@ func Test_Load(t *testing.T) {
 			B_Default3: " x ",
 		}},
 		{name: "ok-2", setup: func() {
-			os.Setenv("CONFER_A", "a")
+			os.Setenv("KEY_A", "a")
 		}, distroy: func() {
-			os.Setenv("CONFER_A", "")
+			os.Setenv("KEY_A", "")
 		}, args: &Conf1{}, want: &Conf1{
 			A:          "a",
 			B_Default1: "x",

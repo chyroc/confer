@@ -51,7 +51,7 @@ type Conf struct {
 
 #### Extractor Grammar
 
-In tag conf, read several strings separated by `,` in turn, the first of which is the name of the `Extractor`,
+In tag `loader`, read several strings separated by `,` in turn, the first of which is the name of the `Extractor`,
 
 and the subsequent list of strings are the parameters of the `Extractor` function execution
 

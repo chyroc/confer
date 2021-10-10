@@ -1,4 +1,4 @@
-package conf
+package load
 
 import (
 	"fmt"
@@ -39,28 +39,28 @@ func Load(source interface{}, tagName string, extractors map[string]Extractor, t
 		}
 		var data string // load data by extractors
 		{
-			if tagConf.loaderName == "" {
+			if tagConf.extractorName == "" {
 				return fmt.Errorf("expect get extractors name")
 			}
-			loader, ok := extractors[tagConf.loaderName]
+			loader, ok := extractors[tagConf.extractorName]
 			if !ok {
-				return fmt.Errorf("%s extractors not found", tagConf.loaderName)
+				return fmt.Errorf("%s extractors not found", tagConf.extractorName)
 			}
-			data, err = loader.Extract(tagConf.loaderArgs)
+			data, err = loader.Extract(tagConf.extractorArgs)
 			if err != nil {
 				return err
 			}
 		}
 		dest := reflect.ValueOf(data)
-		// fmt.Printf("load %q %q\n", Tag.loaderName, data)
+		// fmt.Printf("load %q %q\n", Tag.extractorName, data)
 
 		// transformers data
-		if tagConf.transferName != "" {
-			transfer, ok := transformers[tagConf.transferName]
+		if tagConf.transformerName != "" {
+			transfer, ok := transformers[tagConf.transformerName]
 			if !ok {
-				return fmt.Errorf("%s transformers not found", tagConf.transferName)
+				return fmt.Errorf("%s transformers not found", tagConf.transformerName)
 			}
-			val, err := transfer.Transform(data, tagConf.transferArgs, ft.Type)
+			val, err := transfer.Transform(data, tagConf.transformerArgs, ft.Type)
 			if err != nil {
 				return err
 			}

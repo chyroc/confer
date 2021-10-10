@@ -1,4 +1,4 @@
-package conf
+package load
 
 import (
 	"fmt"
@@ -8,10 +8,11 @@ import (
 )
 
 type Tag struct {
-	loaderName   string
-	loaderArgs   []string
-	transferName string
-	transferArgs []string
+	extractorName   string
+	extractorArgs   []string
+	transformerName string
+	transformerArgs []string
+	isRequired      bool
 }
 
 func ParseTag(tag string) (*Tag, error) {
@@ -51,7 +52,7 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 	r.removeSpace()
 
 	// extractors
-	resp.loaderName, resp.loaderArgs, err = parseKeyArgs()
+	resp.extractorName, resp.extractorArgs, err = parseKeyArgs()
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +60,7 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 	// split extractors and transformers with `;`
 	if err := r.findRune(true, ';'); err == nil {
 		// transformers
-		resp.transferName, resp.transferArgs, err = parseKeyArgs()
+		resp.transformerName, resp.transformerArgs, err = parseKeyArgs()
 		if err != nil {
 			return nil, err
 		}

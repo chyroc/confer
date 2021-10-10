@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/chyroc/go-loader/internal/conf"
 	"github.com/chyroc/go-loader/internal/extractor"
+	"github.com/chyroc/go-loader/internal/load"
 )
 
 // Load get data from everywhere
@@ -22,7 +22,7 @@ func Load(source interface{}, options ...Option) error {
 		return err
 	}
 
-	return conf.Load(source, cli.tagName, getExtractors(cli.extractors), getTransformers(cli.transformers))
+	return load.Load(source, cli.tagName, getExtractors(cli.extractors), getTransformers(cli.transformers))
 }
 
 // Loader impl this package
@@ -90,16 +90,16 @@ func New(options ...Option) (*Loader, error) {
 	return r, nil
 }
 
-func getExtractors(s map[string]Extractor) map[string]conf.Extractor {
-	resp := make(map[string]conf.Extractor, len(s))
+func getExtractors(s map[string]Extractor) map[string]load.Extractor {
+	resp := make(map[string]load.Extractor, len(s))
 	for k, v := range s {
 		resp[k] = v
 	}
 	return resp
 }
 
-func getTransformers(s map[string]Transformer) map[string]conf.Transformer {
-	resp := make(map[string]conf.Transformer, len(s))
+func getTransformers(s map[string]Transformer) map[string]load.Transformer {
+	resp := make(map[string]load.Transformer, len(s))
 	for k, v := range s {
 		resp[k] = v
 	}
