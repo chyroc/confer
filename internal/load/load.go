@@ -3,6 +3,8 @@ package load
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/chyroc/go-loader/internal/helper"
 )
 
 type Extractor interface {
@@ -51,6 +53,12 @@ func Load(source interface{}, opt *Option) error {
 			}
 			data, err = loader.Extract(tagConf.extractorArgs)
 			if err != nil {
+				if tagConf.Default != "" {
+					if err := helper.ReflectSet(fv, ft.Type, tagConf.Default); err != nil {
+						return err
+					}
+					continue
+				}
 				return err
 			}
 		}
@@ -65,6 +73,12 @@ func Load(source interface{}, opt *Option) error {
 			}
 			val, err := transfer.Transform(data, tagConf.transformerArgs, ft.Type)
 			if err != nil {
+				if tagConf.Default != "" {
+					if err := helper.ReflectSet(fv, ft.Type, tagConf.Default); err != nil {
+						return err
+					}
+					continue
+				}
 				return err
 			}
 			dest = reflect.ValueOf(val)
@@ -72,8 +86,16 @@ func Load(source interface{}, opt *Option) error {
 			dest = reflect.ValueOf(data)
 		}
 
-		if tagConf.Required && dest.IsZero() {
-			return fmt.Errorf("field(%q) required", ft.Name)
+		if dest.IsZero() {
+			if tagConf.Default != "" {
+				if err := helper.ReflectSet(fv, ft.Type, tagConf.Default); err != nil {
+					return err
+				}
+				continue
+			}
+			if tagConf.Required {
+				return fmt.Errorf("field(%q) required", ft.Name)
+			}
 		}
 
 		// set

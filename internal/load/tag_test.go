@@ -32,8 +32,28 @@ func Test_parseLoad(t *testing.T) {
 		{name: "ok-7", args: `a," 1 ", 2 , " 3 "`, want: &Tag{extractorName: "a", extractorArgs: []string{" 1 ", "2", " 3 "}}},
 		{name: "ok-8", args: `a," 1 ", 2 , ' 3 '`, want: &Tag{extractorName: "a", extractorArgs: []string{" 1 ", "2", " 3 "}}},
 
-		{name: "keyword-1", args: `a;;required`, want: &Tag{extractorName: "a", Required: true}},
-		{name: "keyword-1", args: `a;;required;`, want: &Tag{extractorName: "a", Required: true}},
+		{name: "keyword-required-1", args: `a;;required`, want: &Tag{extractorName: "a", Required: true}},
+		{name: "keyword-required-2", args: `a;;required;`, want: &Tag{extractorName: "a", Required: true}},
+
+		{name: "keyword-default-1", args: `a;;required,default=`, want: &Tag{extractorName: "a", Required: true, Default: ""}},
+		{name: "keyword-default-2", args: `a;;required,default= 'x'`, want: &Tag{extractorName: "a", Required: true, Default: "x"}},
+		{name: "keyword-default-2", args: `a ; ; required , default = x `, want: &Tag{extractorName: "a", Required: true, Default: "x"}},
+		{name: "keyword-default-2", args: `a ; ; required , default = ' x ' `, want: &Tag{extractorName: "a", Required: true, Default: " x "}},
+		{name: "keyword-default-1", args: `a;;default=`, want: &Tag{extractorName: "a", Required: false, Default: ""}},
+		{name: "keyword-default-2", args: `a;;default= 'x'`, want: &Tag{extractorName: "a", Required: false, Default: "x"}},
+		{name: "keyword-default-2", args: `a ;  ; default = x `, want: &Tag{extractorName: "a", Required: false, Default: "x"}},
+		{name: "keyword-default-2", args: `a ;  ; default = ' x ' `, want: &Tag{extractorName: "a", Required: false, Default: " x "}},
+		{name: "keyword-default-2", args: `a ;  ; default = '  `, errContain: "expect end with quota(')"},
+
+		{name: "keyword-default-1", args: `a;;required,default=;`, want: &Tag{extractorName: "a", Required: true, Default: ""}},
+		{name: "keyword-default-2", args: `a;;required,default= 'x';`, want: &Tag{extractorName: "a", Required: true, Default: "x"}},
+		{name: "keyword-default-2", args: `a ; ; required , default = x ;`, want: &Tag{extractorName: "a", Required: true, Default: "x"}},
+		{name: "keyword-default-2", args: `a ; ; required , default = ' x ' ;`, want: &Tag{extractorName: "a", Required: true, Default: " x "}},
+		{name: "keyword-default-1", args: `a;;default=;`, want: &Tag{extractorName: "a", Required: false, Default: ""}},
+		{name: "keyword-default-2", args: `a;;default= 'x';`, want: &Tag{extractorName: "a", Required: false, Default: "x"}},
+		{name: "keyword-default-2", args: `a ;  ; default = x ;`, want: &Tag{extractorName: "a", Required: false, Default: "x"}},
+		{name: "keyword-default-2", args: `a ;  ; default = ' x ' ;`, want: &Tag{extractorName: "a", Required: false, Default: " x "}},
+		{name: "keyword-default-2", args: `a ;  ; default = '  ;`, errContain: "expect end with quota(')"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

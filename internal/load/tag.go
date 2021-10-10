@@ -8,11 +8,14 @@ import (
 )
 
 type Tag struct {
-	extractorName   string
-	extractorArgs   []string
+	extractorName string
+	extractorArgs []string
+	// ;
 	transformerName string
 	transformerArgs []string
-	Required        bool
+	// ;
+	Required bool
+	Default  string
 }
 
 func ParseTag(tag string) (*Tag, error) {
@@ -29,7 +32,7 @@ type tagParser struct {
 	idx  int
 }
 
-// name,arg1,arg2;name,arg3,arg4;required;default=
+// name,arg1,arg2;name,arg3,arg4;required,default=x
 func (r *tagParser) parse() (resp *Tag, err error) {
 	parseKeyArgs := func() (key string, args []string, err error) {
 		key, err = r.parseString()
@@ -51,7 +54,7 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 	resp = new(Tag)
 	r.removeSpace()
 
-	// extractors
+	// extractor
 	resp.extractorName, resp.extractorArgs, err = parseKeyArgs()
 	if err != nil {
 		return nil, err
@@ -59,8 +62,7 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 		return nil, fmt.Errorf("expect get extractor name")
 	}
 
-	// split extractor and transformer with `;`
-	// transformer can be empty
+	// transformer
 	if err := r.findRune(true, ';'); err == nil {
 		resp.transformerName, resp.transformerArgs, err = parseKeyArgs()
 		if err != nil {
@@ -68,8 +70,9 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 		}
 	}
 
-	for {
-		if err := r.findRune(true, ';'); err == nil && r.idx < len(r.data) {
+	// keyword
+	if err := r.findRune(true, ';'); err == nil {
+		for r.idx < len(r.data) {
 			// lookup keyword
 			switch r.data[r.idx] {
 			case 'r': // required
@@ -78,10 +81,24 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 				}
 				resp.Required = true
 			case 'd': // default=
-
+				if err := r.findRune(true, []rune("default")...); err != nil {
+					return nil, err
+				}
+				if err := r.findRune(true, '='); err != nil {
+					return nil, err
+				}
+				val, err := r.parseString()
+				if err != nil {
+					return nil, err
+				}
+				resp.Default = val
+			default:
+				return nil, fmt.Errorf("unsupport keyword")
 			}
-		} else {
-			break
+
+			if err := r.findRune(true, ','); err != nil {
+				break
+			}
 		}
 	}
 
@@ -89,7 +106,10 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 
 	// expect end of data
 	if r.idx < len(r.data) {
-		return nil, fmt.Errorf("unwanted chars: %s", string(r.data[r.idx:len(r.data)]))
+		if r.idx == len(r.data)-1 && r.data[r.idx] == ';' {
+		} else {
+			return nil, fmt.Errorf("unwanted chars: %s", string(r.data[r.idx:len(r.data)]))
+		}
 	}
 
 	return resp, nil

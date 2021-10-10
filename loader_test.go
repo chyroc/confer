@@ -9,9 +9,9 @@ import (
 
 type Conf1 struct {
 	A          string `loader:"env,KEY_A"`
-	B_Default1 string `loader:"env,KEY_B,default=x"`
-	B_Default2 string `loader:"env,KEY_B,default = x "`
-	B_Default3 string `loader:"env,KEY_B,default = ' x ' "`
+	B_Default1 string `loader:"env,KEY_B;;default=x"`
+	B_Default2 string `loader:"env,KEY_B;;default = x "`
+	B_Default3 string `loader:"env,KEY_B;;default = ' x ' "`
 }
 
 func Test_Load(t *testing.T) {
