@@ -17,11 +17,11 @@ func (r *Env) Name() string {
 	return "env"
 }
 
-// Extract impl Loader for `env`
+// Extract impl Extract for `env`
 func (r *Env) Extract(args []string) (string, error) {
 	// 1 or 2
 	if len(args) != 1 && len(args) != 2 {
-		return "", fmt.Errorf("env loader expect one or two args")
+		return "", fmt.Errorf("env extractor expect one or two args")
 	}
 
 	val := os.Getenv(args[0])
@@ -29,7 +29,7 @@ func (r *Env) Extract(args []string) (string, error) {
 	if len(args) == 2 {
 		a, b, err := helper.ParseAEqualB(args[1])
 		if a != "default" {
-			return "", fmt.Errorf("env loader second args expect default=<val>")
+			return "", fmt.Errorf("env extractor second args expect default=<val>")
 		}
 		if err != nil {
 			return "", err

@@ -18,6 +18,8 @@ func Test_parseAEqualB(t *testing.T) {
 		errContain string
 	}{
 		{name: "err-1", args: `1`, errContain: "reach end of data, `=` cannot found"},
+		{name: "err-1", args: `a='`, errContain: "expect end with quota(')"},
+		{name: "err-1", args: `default='`, errContain: "expect end with quota(')"},
 
 		{name: "ok-1", args: ``, want: []string{"", ""}},
 		{name: "ok-2", args: `1=`, want: []string{"1", ""}},
