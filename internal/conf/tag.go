@@ -1,20 +1,20 @@
-package confer
+package conf
 
 import (
 	"fmt"
 	"strings"
 
-	"github.com/chyroc/confer/internal/helper"
+	"github.com/chyroc/go-loader/internal/helper"
 )
 
-type tagConf struct {
+type Tag struct {
 	loaderName   string
 	loaderArgs   []string
 	transferName string
 	transferArgs []string
 }
 
-func parseTagConf(tag string) (*tagConf, error) {
+func ParseTag(tag string) (*Tag, error) {
 	tag = strings.TrimSpace(tag)
 	if tag == "" {
 		return nil, fmt.Errorf("tag conf can not be empty")
@@ -29,7 +29,7 @@ type tagParser struct {
 }
 
 // load-name,a1,a2;trans-name,a3,a4
-func (r *tagParser) parse() (resp *tagConf, err error) {
+func (r *tagParser) parse() (resp *Tag, err error) {
 	parseKeyArgs := func() (key string, args []string, err error) {
 		key, err = r.parseString()
 		if err != nil {
@@ -47,18 +47,18 @@ func (r *tagParser) parse() (resp *tagConf, err error) {
 		}
 		return key, args, nil
 	}
-	resp = new(tagConf)
+	resp = new(Tag)
 	r.removeSpace()
 
-	// loader
+	// extractors
 	resp.loaderName, resp.loaderArgs, err = parseKeyArgs()
 	if err != nil {
 		return nil, err
 	}
 
-	// split loader and transfer with `;`
+	// split extractors and transformers with `;`
 	if err := r.findRune(true, ';'); err == nil {
-		// transfer
+		// transformers
 		resp.transferName, resp.transferArgs, err = parseKeyArgs()
 		if err != nil {
 			return nil, err

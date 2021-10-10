@@ -1,4 +1,4 @@
-package confer
+package conf
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ func Test_parseLoadConf(t *testing.T) {
 	tests := []struct {
 		name       string
 		args       string
-		want       *tagConf
+		want       *Tag
 		errContain string
 	}{
 		{name: "err-1", args: ``, errContain: "tag conf can not be empty"},
@@ -23,19 +23,19 @@ func Test_parseLoadConf(t *testing.T) {
 		{name: "err-5", args: `a,"x`, errContain: "expect end with quota(\")"},
 		{name: "err-6", args: `a,"x'`, errContain: "expect end with quota(\")"},
 
-		{name: "loader-1", args: `a`, want: &tagConf{loaderName: "a"}},
-		{name: "loader-2", args: `a;b`, want: &tagConf{loaderName: "a", transferName: "b"}},
-		{name: "loader-3", args: `a,1;b`, want: &tagConf{loaderName: "a", loaderArgs: []string{"1"}, transferName: "b"}},
-		{name: "loader-4", args: `a,1,1;b`, want: &tagConf{loaderName: "a", loaderArgs: []string{"1", "1"}, transferName: "b"}},
-		{name: "loader-5", args: `a , 1 , 2 , 3 ; b`, want: &tagConf{loaderName: "a", loaderArgs: []string{"1", "2", "3"}, transferName: "b"}},
-		{name: "loader-6", args: `a , 1 , 2 , 3 ; b,,`, want: &tagConf{loaderName: "a", loaderArgs: []string{"1", "2", "3"}, transferName: "b", transferArgs: []string{"", ""}}},
-		{name: "loader-7", args: `a," 1 ", 2 , " 3 "`, want: &tagConf{loaderName: "a", loaderArgs: []string{" 1 ", "2", " 3 "}}},
-		{name: "loader-8", args: `a," 1 ", 2 , ' 3 '`, want: &tagConf{loaderName: "a", loaderArgs: []string{" 1 ", "2", " 3 "}}},
+		{name: "extractors-1", args: `a`, want: &Tag{loaderName: "a"}},
+		{name: "extractors-2", args: `a;b`, want: &Tag{loaderName: "a", transferName: "b"}},
+		{name: "extractors-3", args: `a,1;b`, want: &Tag{loaderName: "a", loaderArgs: []string{"1"}, transferName: "b"}},
+		{name: "extractors-4", args: `a,1,1;b`, want: &Tag{loaderName: "a", loaderArgs: []string{"1", "1"}, transferName: "b"}},
+		{name: "extractors-5", args: `a , 1 , 2 , 3 ; b`, want: &Tag{loaderName: "a", loaderArgs: []string{"1", "2", "3"}, transferName: "b"}},
+		{name: "extractors-6", args: `a , 1 , 2 , 3 ; b,,`, want: &Tag{loaderName: "a", loaderArgs: []string{"1", "2", "3"}, transferName: "b", transferArgs: []string{"", ""}}},
+		{name: "extractors-7", args: `a," 1 ", 2 , " 3 "`, want: &Tag{loaderName: "a", loaderArgs: []string{" 1 ", "2", " 3 "}}},
+		{name: "extractors-8", args: `a," 1 ", 2 , ' 3 '`, want: &Tag{loaderName: "a", loaderArgs: []string{" 1 ", "2", " 3 "}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			msg := fmt.Sprintf("%s - in: %q, out: %#v", tt.name, tt.args, tt.want)
-			got, err := parseTagConf(tt.args)
+			got, err := ParseTag(tt.args)
 			if tt.errContain == "" {
 				as.Nil(err, msg)
 				as.NotNil(got, msg)

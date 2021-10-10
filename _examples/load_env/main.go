@@ -3,19 +3,19 @@ package main
 import (
 	"fmt"
 
-	"github.com/chyroc/confer"
+	"github.com/chyroc/go-loader"
 )
 
 type Conf struct {
-	GitHubToken string `conf:"env,GITHUB_TOKEN"`
+	GitHubToken string `loader:"env,GITHUB_TOKEN"`
 }
 
 func main() {
 	conf := new(Conf)
-	err := confer.Load(conf)
+	err := loader.Load(conf)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("conf:", conf.GitHubToken)
+	fmt.Println("loader:", conf.GitHubToken)
 }

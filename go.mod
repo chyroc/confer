@@ -1,4 +1,4 @@
-module github.com/chyroc/confer
+module github.com/chyroc/go-loader
 
 go 1.17
 

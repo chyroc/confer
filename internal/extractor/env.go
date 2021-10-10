@@ -1,10 +1,10 @@
-package loader
+package extractor
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/chyroc/confer/internal/helper"
+	"github.com/chyroc/go-loader/internal/helper"
 )
 
 type Env struct{}
@@ -17,8 +17,8 @@ func (r *Env) Name() string {
 	return "env"
 }
 
-// Load impl Loader for `env`
-func (r *Env) Load(args []string) (string, error) {
+// Extract impl Loader for `env`
+func (r *Env) Extract(args []string) (string, error) {
 	// 1 or 2
 	if len(args) != 1 && len(args) != 2 {
 		return "", fmt.Errorf("env loader expect one or two args")

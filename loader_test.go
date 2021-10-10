@@ -1,4 +1,4 @@
-package confer
+package loader
 
 import (
 	"os"
@@ -8,10 +8,10 @@ import (
 )
 
 type Conf1 struct {
-	A          string `conf:"env,CONFER_A"`
-	B_Default1 string `conf:"env,CONFER_B,default=x"`
-	B_Default2 string `conf:"env,CONFER_B,default = x "`
-	B_Default3 string `conf:"env,CONFER_B,default = ' x ' "`
+	A          string `loader:"env,CONFER_A"`
+	B_Default1 string `loader:"env,CONFER_B,default=x"`
+	B_Default2 string `loader:"env,CONFER_B,default = x "`
+	B_Default3 string `loader:"env,CONFER_B,default = ' x ' "`
 }
 
 func Test_Load(t *testing.T) {
