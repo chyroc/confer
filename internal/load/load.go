@@ -15,7 +15,13 @@ type Transformer interface {
 	Transform(data string, args []string, typ reflect.Type) (interface{}, error)
 }
 
-func Load(source interface{}, tagName string, extractors map[string]Extractor, transformers map[string]Transformer) error {
+type Option struct {
+	TagName      string
+	Extractors   map[string]Extractor
+	Transformers map[string]Transformer
+}
+
+func Load(source interface{}, opt *Option) error {
 	vv := reflect.ValueOf(source)
 	vt := reflect.TypeOf(source)
 	if vv.Kind() != reflect.Ptr {
@@ -29,7 +35,7 @@ func Load(source interface{}, tagName string, extractors map[string]Extractor, t
 	for i := 0; i < vv.NumField(); i++ {
 		fv := vv.Field(i)
 		ft := vt.Field(i)
-		tag, ok := ft.Tag.Lookup(tagName)
+		tag, ok := ft.Tag.Lookup(opt.TagName)
 		if !ok {
 			continue // TODO return error ?
 		}
@@ -39,24 +45,21 @@ func Load(source interface{}, tagName string, extractors map[string]Extractor, t
 		}
 		var data string // load data by extractors
 		{
-			if tagConf.extractorName == "" {
-				return fmt.Errorf("expect get extractors name")
-			}
-			loader, ok := extractors[tagConf.extractorName]
+			loader, ok := opt.Extractors[tagConf.extractorName]
 			if !ok {
-				return fmt.Errorf("%s extractors not found", tagConf.extractorName)
+				return fmt.Errorf("extractor(%q) not found", tagConf.extractorName)
 			}
 			data, err = loader.Extract(tagConf.extractorArgs)
 			if err != nil {
 				return err
 			}
 		}
-		dest := reflect.ValueOf(data)
 		// fmt.Printf("load %q %q\n", Tag.extractorName, data)
 
 		// transformers data
+		var dest reflect.Value
 		if tagConf.transformerName != "" {
-			transfer, ok := transformers[tagConf.transformerName]
+			transfer, ok := opt.Transformers[tagConf.transformerName]
 			if !ok {
 				return fmt.Errorf("%s transformers not found", tagConf.transformerName)
 			}
@@ -65,6 +68,12 @@ func Load(source interface{}, tagName string, extractors map[string]Extractor, t
 				return err
 			}
 			dest = reflect.ValueOf(val)
+		} else {
+			dest = reflect.ValueOf(data)
+		}
+
+		if tagConf.Required && dest.IsZero() {
+			return fmt.Errorf("field(%q) required", ft.Name)
 		}
 
 		// set

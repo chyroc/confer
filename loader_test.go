@@ -71,3 +71,55 @@ func Test_Load(t *testing.T) {
 		})
 	}
 }
+
+type Conf2 struct {
+	A string `loader:"env,KEY_A;;required"`
+}
+
+func Test_LoadRequired(t *testing.T) {
+	as := assert.New(t)
+
+	tests := []struct {
+		name       string
+		args       interface{}
+		setup      func()
+		distroy    func()
+		want       *Conf2
+		errContain string
+	}{
+		{name: "ok-1", setup: func() {
+			os.Setenv("KEY_A", "a")
+		}, distroy: func() {
+			os.Setenv("KEY_A", "")
+		}, args: &Conf2{}, want: &Conf2{
+			A: "a",
+		}},
+
+		{name: "fail-1", args: &Conf2{}, errContain: "field(\"A\") required"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.setup != nil {
+				tt.setup()
+			}
+			if tt.distroy != nil {
+				defer tt.distroy()
+			}
+
+			var req interface{}
+			if tt.args == nil {
+				req = new(Conf1)
+			} else {
+				req = tt.args
+			}
+			err := Load(req)
+			if tt.errContain != "" {
+				as.NotNil(err)
+				as.Contains(err.Error(), tt.errContain)
+			} else {
+				as.Nil(err)
+				as.Equal(tt.want, req)
+			}
+		})
+	}
+}

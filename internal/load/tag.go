@@ -12,7 +12,7 @@ type Tag struct {
 	extractorArgs   []string
 	transformerName string
 	transformerArgs []string
-	isRequired      bool
+	Required        bool
 }
 
 func ParseTag(tag string) (*Tag, error) {
@@ -29,7 +29,7 @@ type tagParser struct {
 	idx  int
 }
 
-// load-name,a1,a2;trans-name,a3,a4
+// name,arg1,arg2;name,arg3,arg4;required;default=
 func (r *tagParser) parse() (resp *Tag, err error) {
 	parseKeyArgs := func() (key string, args []string, err error) {
 		key, err = r.parseString()
@@ -55,14 +55,33 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 	resp.extractorName, resp.extractorArgs, err = parseKeyArgs()
 	if err != nil {
 		return nil, err
+	} else if resp.extractorName == "" {
+		return nil, fmt.Errorf("expect get extractor name")
 	}
 
-	// split extractors and transformers with `;`
+	// split extractor and transformer with `;`
+	// transformer can be empty
 	if err := r.findRune(true, ';'); err == nil {
-		// transformers
 		resp.transformerName, resp.transformerArgs, err = parseKeyArgs()
 		if err != nil {
 			return nil, err
+		}
+	}
+
+	for {
+		if err := r.findRune(true, ';'); err == nil && r.idx < len(r.data) {
+			// lookup keyword
+			switch r.data[r.idx] {
+			case 'r': // required
+				if err := r.findRune(true, []rune("required")...); err != nil {
+					return nil, err
+				}
+				resp.Required = true
+			case 'd': // default=
+
+			}
+		} else {
+			break
 		}
 	}
 
@@ -70,9 +89,6 @@ func (r *tagParser) parse() (resp *Tag, err error) {
 
 	// expect end of data
 	if r.idx < len(r.data) {
-		if r.data[r.idx] == ';' {
-			return nil, fmt.Errorf("expect contain at most one `;`")
-		}
 		return nil, fmt.Errorf("unwanted chars: %s", string(r.data[r.idx:len(r.data)]))
 	}
 
@@ -121,11 +137,13 @@ func (r *tagParser) parseString() (string, error) {
 }
 
 func (r *tagParser) findRune(isKey bool, rs ...rune) error {
-	if r.idx >= len(r.data) {
-		return fmt.Errorf("reach end of data, `%s` cannot found", string(rs))
-	}
 	if isKey {
 		r.removeSpace()
+	}
+	if r.idx >= len(r.data) {
+		return fmt.Errorf("`%s` cannot found", string(rs))
+	} else if r.idx+len(rs) > len(r.data) {
+		return fmt.Errorf("`%s` cannot found", string(rs))
 	}
 	c := 0
 	for i := r.idx; i < len(r.data) && i-r.idx >= 0 && i-r.idx < len(rs); i++ {

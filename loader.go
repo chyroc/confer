@@ -22,7 +22,7 @@ func Load(source interface{}, options ...Option) error {
 		return err
 	}
 
-	return load.Load(source, cli.tagName, getExtractors(cli.extractors), getTransformers(cli.transformers))
+	return load.Load(source, cli.internalOption())
 }
 
 // Loader impl this package
@@ -90,18 +90,18 @@ func New(options ...Option) (*Loader, error) {
 	return r, nil
 }
 
-func getExtractors(s map[string]Extractor) map[string]load.Extractor {
-	resp := make(map[string]load.Extractor, len(s))
-	for k, v := range s {
-		resp[k] = v
+func (r *Loader) internalOption() *load.Option {
+	resp := &load.Option{
+		TagName:      r.tagName,
+		Extractors:   map[string]load.Extractor{},
+		Transformers: map[string]load.Transformer{},
 	}
-	return resp
-}
 
-func getTransformers(s map[string]Transformer) map[string]load.Transformer {
-	resp := make(map[string]load.Transformer, len(s))
-	for k, v := range s {
-		resp[k] = v
+	for k, v := range r.extractors {
+		resp.Extractors[k] = v
+	}
+	for k, v := range r.transformers {
+		resp.Transformers[k] = v
 	}
 	return resp
 }
