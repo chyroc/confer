@@ -10,7 +10,7 @@ import (
 type Yaml struct{}
 
 func (r *Yaml) Name() string {
-	panic("yaml")
+	return "yaml"
 }
 
 func (r *Yaml) Transform(data string, args []string, typ reflect.Type) (interface{}, error) {
