@@ -45,6 +45,11 @@ func Load(source interface{}, opt *Option) error {
 		if err != nil {
 			return err
 		}
+
+		if !fv.CanSet() {
+			return fmt.Errorf("field(%s) cannot set", ft.Name)
+		}
+
 		var data string // load data by extractors
 		{
 			loader, ok := opt.Extractors[tagConf.extractorName]
@@ -54,7 +59,7 @@ func Load(source interface{}, opt *Option) error {
 			data, err = loader.Extract(tagConf.extractorArgs)
 			if err != nil {
 				if tagConf.Default != "" {
-					if err := helper.ReflectSet(fv, ft.Type, tagConf.Default); err != nil {
+					if err := helper.AssignValueToReflect(fv, reflect.ValueOf(tagConf.Default)); err != nil {
 						return err
 					}
 					continue
@@ -74,7 +79,7 @@ func Load(source interface{}, opt *Option) error {
 			val, err := transfer.Transform(data, tagConf.transformerArgs, ft.Type)
 			if err != nil {
 				if tagConf.Default != "" {
-					if err := helper.ReflectSet(fv, ft.Type, tagConf.Default); err != nil {
+					if err := helper.AssignValueToReflect(fv, reflect.ValueOf(tagConf.Default)); err != nil {
 						return err
 					}
 					continue
@@ -88,7 +93,7 @@ func Load(source interface{}, opt *Option) error {
 
 		if dest.IsZero() {
 			if tagConf.Default != "" {
-				if err := helper.ReflectSet(fv, ft.Type, tagConf.Default); err != nil {
+				if err := helper.AssignValueToReflect(fv, reflect.ValueOf(tagConf.Default)); err != nil {
 					return err
 				}
 				continue
@@ -98,9 +103,8 @@ func Load(source interface{}, opt *Option) error {
 			}
 		}
 
-		// set
-		if fv.CanSet() {
-			fv.Set(dest)
+		if err := helper.AssignValueToReflect(fv, dest); err != nil {
+			return err
 		}
 	}
 	return nil

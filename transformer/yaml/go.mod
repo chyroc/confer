@@ -2,8 +2,12 @@ module github.com/chyroc/go-loaders/transformer/transformer_yaml
 
 go 1.17
 
+replace (
+	github.com/chyroc/go-loader => ../..
+)
+
 require (
-	github.com/chyroc/go-loader v0.4.0
+	github.com/chyroc/go-loader v0.5.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/goccy/go-yaml v1.8.9
 	github.com/stretchr/testify v1.7.0

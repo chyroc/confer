@@ -23,7 +23,7 @@ func (r *Yaml) Transform(data string, args []string, typ reflect.Type) (interfac
 		return nil, err
 	}
 
-	return reflect.ValueOf(val), nil
+	return val, nil
 }
 
 func New() *Yaml {

@@ -3,7 +3,6 @@ package query_key
 import (
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,7 +32,6 @@ func TestParse(t *testing.T) {
 			} else {
 				as.Nil(err)
 				as.NotNil(got)
-				spew.Dump(got)
 				as.Equal(tt.want, got)
 			}
 		})

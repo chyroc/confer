@@ -17,18 +17,6 @@ import (
 // map[string]interface
 // []interface {}
 
-// func main() {
-// 	bs := readfile(os.Args[1])
-// 	fmt.Println(string(bs))
-// 	key := os.Args[2]
-//
-// 	resp, err := AccessYaml(bs, key)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	spew.Dump(resp)
-// }
-
 func QueryYaml(bs []byte, key string) (interface{}, error) {
 	queryKey, err := query_key.Parse(key)
 	if err != nil {
