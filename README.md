@@ -29,6 +29,7 @@ go-loader has several built-in data `Extractor` and `Transformer`.
 
 - build-in `Extractor`
   - `env`
+  - `file`
 - build-in `Transformer`
 
 Of course, users can also customize:

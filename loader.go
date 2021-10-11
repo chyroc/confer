@@ -15,7 +15,8 @@ import (
 func Load(source interface{}, options ...Option) error {
 	cli, err := New(
 		append([]Option{
-			WithExtractor(extractor.NewEnv()), // extractor: env
+			WithExtractor(extractor.NewEnv()),  // extractor: env
+			WithExtractor(extractor.NewFile()), // extractor: file
 		}, options...)...,
 	)
 	if err != nil {
