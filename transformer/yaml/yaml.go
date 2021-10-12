@@ -1,10 +1,7 @@
 package transformer_yaml
 
 import (
-	"fmt"
-	"reflect"
-
-	"github.com/chyroc/go-loaders/transformer/transformer_yaml/yaml_query"
+	"github.com/chyroc/go-loader"
 )
 
 type Yaml struct{}
@@ -13,17 +10,17 @@ func (r *Yaml) Name() string {
 	return "yaml"
 }
 
-func (r *Yaml) Transform(data string, args []string, typ reflect.Type) (interface{}, error) {
-	if len(args) != 1 {
-		return "", fmt.Errorf("yaml transformer expect one args")
-	}
+func (r *Yaml) Transform(data string, args *loader.TransformerReq) (interface{}, error) {
+	// if len(args) != 1 {
+	// 	return "", fmt.Errorf("yaml transformer expect one args")
+	// }
+	//
+	// val, err := yaml_query.QueryYaml([]byte(data), args[0])
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	val, err := yaml_query.QueryYaml([]byte(data), args[0])
-	if err != nil {
-		return nil, err
-	}
-
-	return val, nil
+	return nil, nil
 }
 
 func New() *Yaml {

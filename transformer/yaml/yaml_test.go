@@ -109,9 +109,9 @@ func TestName(t *testing.T) {
 		//  g2: "x"
 		type Bool struct {
 			D struct {
-				G1 uint32 `loader:"inherit,as:yaml;yaml,.g1"`
-				G2 string `loader:"inherit,as:yaml;yaml,.g2"`
-			} `loader:"file,testdata/map.yaml;yaml,.g,to:string"` // x
+				G1 uint32 `loader:";yaml,key=.g1"`
+				G2 string `loader:";yaml,key=.g2"`
+			} `loader:"file,testdata/map.yaml;yaml,.g"` // x
 		}
 		res := new(Bool)
 

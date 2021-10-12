@@ -1,11 +1,27 @@
 package extractor
 
+import (
+	"fmt"
+
+	"github.com/chyroc/go-loader/internal"
+)
+
 type Inherit struct{}
 
-func (r *Inherit) Name() string {
-	panic("implement me")
+func NewInherit() *Inherit {
+	return &Inherit{}
 }
 
-func (r *Inherit) Extract(args []string) (string, error) {
+func (r *Inherit) Name() string {
+	return "inherit"
+}
+
+func (r *Inherit) Extract(args *internal.ExtractorReq) (string, error) {
+	format, _ := args.Get("format")
+	if format == "" {
+		return "", fmt.Errorf("inherit extractor expect `format` args")
+	}
+	switch format {
+	}
 	panic("implement me")
 }
