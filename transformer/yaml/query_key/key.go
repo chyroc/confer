@@ -89,7 +89,7 @@ func (r *queryKeyParser) findRune(isKey bool, rs ...rune) error {
 			c++
 			continue
 		}
-		return fmt.Errorf("expect: %s, but got: %s", string(rs), string(r.data[r.idx:min(r.idx+len(rs), len(r.data))]))
+		return fmt.Errorf("expect: `%s`, but got: `%s`", string(rs), string(r.data[r.idx:min(r.idx+len(rs), len(r.data))]))
 	}
 	r.idx += c
 	if isKey {

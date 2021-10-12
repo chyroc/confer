@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/chyroc/go-loader/internal"
 )
 
 type File struct{}
@@ -20,11 +22,11 @@ func (r *File) Name() string {
 //
 // file Extractor accept one arg as filepath
 // filepath support use $ENV_NAME as part of filepath
-func (r *File) Extract(args []string) (string, error) {
-	if len(args) != 1 {
-		return "", fmt.Errorf("file extractor expect one args")
+func (r *File) Extract(args *internal.ExtractorReq) (string, error) {
+	path, _ := args.Get("path")
+	if path == "" {
+		return "", fmt.Errorf("file extractor expect `path` args")
 	}
-	path := args[0]
 	path = os.ExpandEnv(path)
 
 	bs, err := ioutil.ReadFile(path)

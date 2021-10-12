@@ -2,8 +2,8 @@ package loader
 
 import (
 	"fmt"
-	"reflect"
 
+	"github.com/chyroc/go-loader/internal"
 	"github.com/chyroc/go-loader/internal/extractor"
 	"github.com/chyroc/go-loader/internal/load"
 )
@@ -36,17 +36,13 @@ type Loader struct {
 // Option config how Loader work
 type Option func(r *Loader) error
 
-// Extractor define how to extract data from multi source
-type Extractor interface {
-	Name() string
-	Extract(args []string) (string, error)
-}
-
-// Transformer define how to transform origin data to target data
-type Transformer interface {
-	Name() string
-	Transform(data string, args []string, typ reflect.Type) (interface{}, error)
-}
+type (
+	KeyVal         = internal.KeyVal
+	ExtractorReq   = internal.ExtractorReq
+	TransformerReq = internal.TransformerReq
+	Extractor      = internal.Extractor
+	Transformer    = internal.Transformer
+)
 
 // WithExtractor add extractor to Loader
 func WithExtractor(extractors ...Extractor) Option {
@@ -94,8 +90,8 @@ func New(options ...Option) (*Loader, error) {
 func (r *Loader) internalOption() *load.Option {
 	resp := &load.Option{
 		TagName:      r.tagName,
-		Extractors:   map[string]load.Extractor{},
-		Transformers: map[string]load.Transformer{},
+		Extractors:   map[string]internal.Extractor{},
+		Transformers: map[string]internal.Transformer{},
 	}
 
 	for k, v := range r.extractors {

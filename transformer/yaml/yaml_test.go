@@ -102,4 +102,21 @@ func TestName(t *testing.T) {
 		as.Equal("x", res.C)
 		as.Equal("x", res.D)
 	})
+
+	t.Run("", func(t *testing.T) {
+		// g:
+		//  g1: 1
+		//  g2: "x"
+		type Bool struct {
+			D struct {
+				G1 uint32 `loader:"inherit,as:yaml;yaml,.g1"`
+				G2 string `loader:"inherit,as:yaml;yaml,.g2"`
+			} `loader:"file,testdata/map.yaml;yaml,.g,to:string"` // x
+		}
+		res := new(Bool)
+
+		err := loader.Load(res, loader.WithTransform(New()))
+		as.Nil(err)
+		as.Equal("x", res.D.G2)
+	})
 }

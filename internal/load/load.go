@@ -4,23 +4,14 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/chyroc/go-loader/internal"
 	"github.com/chyroc/go-loader/internal/helper"
 )
 
-type Extractor interface {
-	Name() string
-	Extract(args []string) (string, error)
-}
-
-type Transformer interface {
-	Name() string
-	Transform(data string, args []string, typ reflect.Type) (interface{}, error)
-}
-
 type Option struct {
 	TagName      string
-	Extractors   map[string]Extractor
-	Transformers map[string]Transformer
+	Extractors   map[string]internal.Extractor
+	Transformers map[string]internal.Transformer
 }
 
 func Load(source interface{}, opt *Option) error {
@@ -76,7 +67,7 @@ func Load(source interface{}, opt *Option) error {
 			if !ok {
 				return fmt.Errorf("%s transformers not found", tagConf.transformerName)
 			}
-			val, err := transfer.Transform(data, tagConf.transformerArgs, ft.Type)
+			val, err := transfer.Transform(data, tagConf.transformerArgs)
 			if err != nil {
 				if tagConf.Default != "" {
 					if err := helper.AssignValueToReflect(fv, reflect.ValueOf(tagConf.Default)); err != nil {
