@@ -7,6 +7,10 @@ import (
 	"github.com/chyroc/go-loader/internal"
 )
 
+// Env is a extractor for environment variables.
+//
+// Usage:
+//   `loader:"env,key:ENV_KEY"`
 type Env struct{}
 
 func NewEnv() *Env {
