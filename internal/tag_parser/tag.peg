@@ -4,11 +4,25 @@ type TagParser Peg {
 }
 
 // https://github.com/cloudwego/thriftgo/blob/main/parser/thrift.peg
+// env,key=k;json,key=.key
 
-Document <- Extractor
+Document <- Extractor (';' Transformer)?
 
-Extractor <- Identifier ',' 'key' '='
+Extractor <- Identifier (COMMA Identifier EQUAL Identifier)*
 
-Identifier <- Letter
+Transformer <- Identifier (COMMA Identifier EQUAL Identifier)*
+
+Identifier <- Skip <Letter ( Letter / '.' )*> Indent*
 
 Letter <- [A-Z] / [a-z] / '_'
+
+// copy from https://github.com/cloudwego/thriftgo/blob/main/parser/thrift.peg
+Skip <- (Space)*
+SkipLine <- (Indent)* CarriageReturnLineFeed?
+
+Space <- (Indent / CarriageReturnLineFeed)+
+Indent <- [ \t\v]
+CarriageReturnLineFeed <- [\r\n]
+
+COMMA       <- Skip ','     Indent*
+EQUAL       <- Skip '='     Indent*
