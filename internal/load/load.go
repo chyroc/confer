@@ -28,7 +28,7 @@ func Load(source interface{}, opt *Option) error {
 	for i := 0; i < vv.NumField(); i++ {
 		fv := vv.Field(i)
 		ft := vt.Field(i)
-		tag, ok := ft.Tag.Lookup(opt.TagName)
+		tag, ok := ft.Tag.Lookup(opt.TagName) // default is loader
 		if !ok {
 			continue // TODO return error ?
 		}

@@ -8,10 +8,10 @@ import (
 )
 
 type Conf1 struct {
-	A          string `loader:"env,key:KEY_A"`
-	B_Default1 string `loader:"env,key:KEY_B;;default:x"`
-	B_Default2 string `loader:"env,key:KEY_B;;default : x "`
-	B_Default3 string `loader:"env,key:KEY_B;;default : ' x ' "`
+	A          string `loader:"env,key=KEY_A"`
+	B_Default1 string `loader:"env,key=KEY_B;;default=x"`
+	B_Default2 string `loader:"env,key=KEY_B;;default = x "`
+	B_Default3 string `loader:"env,key=KEY_B;;default = \" x \" "`
 }
 
 func Test_Load(t *testing.T) {
@@ -73,7 +73,7 @@ func Test_Load(t *testing.T) {
 }
 
 type Conf2 struct {
-	A string `loader:"env,key:KEY_A;;required"`
+	A string `loader:"env,key=KEY_A;;required"`
 }
 
 func Test_LoadRequired(t *testing.T) {

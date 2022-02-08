@@ -12,6 +12,7 @@ import (
 //
 // Load add some build-in extractor and transformer
 //   - extractor: env
+//   - extractor: file
 func Load(source interface{}, options ...Option) error {
 	cli, err := New(
 		append([]Option{

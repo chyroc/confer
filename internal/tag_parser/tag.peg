@@ -1,0 +1,39 @@
+package tag_parser
+
+type TagParser Peg {
+}
+
+// https://github.com/cloudwego/thriftgo/blob/main/parser/thrift.peg
+// env,key=k;json,key=.key;required
+// env,key=val;;required
+
+Document <- Extractor ';' Transformer ';' Option /
+            Extractor ';' Transformer /
+            Extractor
+
+Extractor <- Identifier (COMMA Identifier EQUAL Identifier)*
+
+Transformer <- Identifier (COMMA Identifier EQUAL Identifier)*
+
+Option <- (Required / Default)? (COMMA (Required / Default))*
+
+Identifier <- Skip '"' <( Letter / Digit / Space / '.' )*> '"' Indent* /
+              Skip <( Letter / Digit / '.' )*> Indent*
+
+Required <- REQUIRED
+Default <- DEFAULT EQUAL Identifier
+
+Letter <- [A-Z] / [a-z] / '_'
+Digit <- [0-9]
+
+// copy from https://github.com/cloudwego/thriftgo/blob/main/parser/thrift.peg
+Skip <- (Space)*
+
+Space <- (Indent / CarriageReturnLineFeed)+
+Indent <- [ \t\v]
+CarriageReturnLineFeed <- [\r\n]
+
+COMMA       <- Skip ','        Indent*
+EQUAL       <- Skip '='        Indent*
+REQUIRED    <- Skip 'required' Indent*
+DEFAULT     <- Skip 'default'  Indent*
