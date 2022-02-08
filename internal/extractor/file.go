@@ -8,6 +8,11 @@ import (
 	"github.com/chyroc/go-loader/internal"
 )
 
+// File is an extractor for file
+//
+// Usage:
+//   `loader:"file,path=./test.txt"`
+//   `loader:"file,path=$FILE_PATH"`
 type File struct{}
 
 func NewFile() *File {
