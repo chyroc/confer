@@ -1,10 +1,9 @@
-module github.com/chyroc/go-loader
+module github.com/chyroc/go-loader/adapter/extractor_file
 
 go 1.17
 
 require (
-	github.com/chyroc/go-loader/adapter/extractor_env v0.1.0
-	github.com/chyroc/go-ptr v1.5.1
+	github.com/chyroc/go-loader v0.8.0
 	github.com/stretchr/testify v1.7.0
 )
 

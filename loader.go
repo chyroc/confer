@@ -3,6 +3,7 @@ package loader
 import (
 	"fmt"
 
+	"github.com/chyroc/go-loader/adapter/extractor_env"
 	"github.com/chyroc/go-loader/iface"
 	"github.com/chyroc/go-loader/internal/extractor"
 	"github.com/chyroc/go-loader/internal/load"
@@ -16,8 +17,8 @@ import (
 func Load(source interface{}, options ...Option) error {
 	cli, err := New(
 		append([]Option{
-			WithExtractor(extractor.NewEnv()),  // extractor: env
-			WithExtractor(extractor.NewFile()), // extractor: file
+			WithExtractor(extractor_env.NewEnv()), // extractor: env
+			WithExtractor(extractor.NewFile()),    // extractor: file
 		}, options...)...,
 	)
 	if err != nil {
