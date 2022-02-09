@@ -1,4 +1,4 @@
-package extractor
+package extractor_file
 
 import (
 	"io/ioutil"
