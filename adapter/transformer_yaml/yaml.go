@@ -1,7 +1,7 @@
 package transformer_yaml
 
 import (
-	"github.com/chyroc/go-loader"
+	"github.com/chyroc/go-loader/iface"
 )
 
 type Yaml struct{}
@@ -10,7 +10,7 @@ func (r *Yaml) Name() string {
 	return "yaml"
 }
 
-func (r *Yaml) Transform(data string, args *loader.TransformerReq) (interface{}, error) {
+func (r *Yaml) Transform(data string, args *iface.TransformerReq) (interface{}, error) {
 	// if len(args) != 1 {
 	// 	return "", fmt.Errorf("yaml transformer expect one args")
 	// }

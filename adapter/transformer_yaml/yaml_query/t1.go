@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"reflect"
 
-	"github.com/chyroc/go-loaders/transformer/transformer_yaml/query_key"
+	"github.com/chyroc/go-loader/adapter/transformer_yaml/query_key"
 	"github.com/goccy/go-yaml"
 )
 
