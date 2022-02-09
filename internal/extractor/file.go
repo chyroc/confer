@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/chyroc/go-loader/internal/iface"
+	"github.com/chyroc/go-loader/iface"
 )
 
 // File is an extractor for file

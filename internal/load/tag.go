@@ -1,7 +1,7 @@
 package load
 
 import (
-	"github.com/chyroc/go-loader/internal/iface"
+	"github.com/chyroc/go-loader/iface"
 	"github.com/chyroc/go-loader/internal/tag_parser"
 )
 

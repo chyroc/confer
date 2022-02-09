@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/chyroc/go-loader/iface"
 	"github.com/chyroc/go-loader/internal/helper"
-	"github.com/chyroc/go-loader/internal/iface"
 )
 
 type Option struct {

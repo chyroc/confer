@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/chyroc/go-loader/internal/iface"
+	"github.com/chyroc/go-loader/iface"
 	"github.com/stretchr/testify/assert"
 )
 

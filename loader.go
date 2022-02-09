@@ -3,8 +3,8 @@ package loader
 import (
 	"fmt"
 
+	"github.com/chyroc/go-loader/iface"
 	"github.com/chyroc/go-loader/internal/extractor"
-	"github.com/chyroc/go-loader/internal/iface"
 	"github.com/chyroc/go-loader/internal/load"
 )
 

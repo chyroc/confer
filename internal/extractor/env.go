@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/chyroc/go-loader/internal/iface"
+	"github.com/chyroc/go-loader/iface"
 )
 
 // Env is a extractor for environment variables.
