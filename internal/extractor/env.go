@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/chyroc/go-loader/internal"
+	"github.com/chyroc/go-loader/internal/iface"
 )
 
 // Env is a extractor for environment variables.
@@ -22,7 +22,7 @@ func (r *Env) Name() string {
 }
 
 // Extract impl Extract for `env`
-func (r *Env) Extract(args *internal.ExtractorReq) (string, error) {
+func (r *Env) Extract(args *iface.ExtractorReq) (string, error) {
 	key, _ := args.Get("key")
 	if key == "" {
 		return "", fmt.Errorf("env extractor expect `key` args")

@@ -1,16 +1,16 @@
 package load
 
 import (
-	"github.com/chyroc/go-loader/internal"
+	"github.com/chyroc/go-loader/internal/iface"
 	"github.com/chyroc/go-loader/internal/tag_parser"
 )
 
 type Tag struct {
 	extractorName string
-	extractorArgs *internal.ExtractorReq
+	extractorArgs *iface.ExtractorReq
 	// ;
 	transformerName string
-	transformerArgs *internal.TransformerReq
+	transformerArgs *iface.TransformerReq
 	// ;
 	Required bool
 	Default  string
@@ -24,16 +24,16 @@ func ParseTag(tag string) (*Tag, error) {
 	resp := new(Tag)
 	if res.Extractor != nil {
 		resp.extractorName = res.Extractor.Name
-		resp.extractorArgs = new(internal.ExtractorReq)
+		resp.extractorArgs = new(iface.ExtractorReq)
 		for _, v := range res.Extractor.Args {
-			resp.extractorArgs.KeyVal = append(resp.extractorArgs.KeyVal, internal.KeyVal{Key: v.Key, Val: v.Val})
+			resp.extractorArgs.KeyVal = append(resp.extractorArgs.KeyVal, iface.KeyVal{Key: v.Key, Val: v.Val})
 		}
 	}
 	if res.Transformer != nil {
 		resp.transformerName = res.Transformer.Name
-		resp.transformerArgs = new(internal.TransformerReq)
+		resp.transformerArgs = new(iface.TransformerReq)
 		for _, v := range res.Transformer.Args {
-			resp.transformerArgs.KeyVal = append(resp.transformerArgs.KeyVal, internal.KeyVal{Key: v.Key, Val: v.Val})
+			resp.transformerArgs.KeyVal = append(resp.transformerArgs.KeyVal, iface.KeyVal{Key: v.Key, Val: v.Val})
 		}
 	}
 

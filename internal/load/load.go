@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/chyroc/go-loader/internal"
 	"github.com/chyroc/go-loader/internal/helper"
+	"github.com/chyroc/go-loader/internal/iface"
 )
 
 type Option struct {
 	TagName      string
-	Extractors   map[string]internal.Extractor
-	Transformers map[string]internal.Transformer
+	Extractors   map[string]iface.Extractor
+	Transformers map[string]iface.Transformer
 }
 
 func Load(source interface{}, opt *Option) error {

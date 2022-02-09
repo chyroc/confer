@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/chyroc/go-loader/internal"
+	"github.com/chyroc/go-loader/internal/iface"
 )
 
 // File is an extractor for file
@@ -27,7 +27,7 @@ func (r *File) Name() string {
 //
 // file Extractor accept one arg as filepath
 // filepath support use $ENV_NAME as part of filepath
-func (r *File) Extract(args *internal.ExtractorReq) (string, error) {
+func (r *File) Extract(args *iface.ExtractorReq) (string, error) {
 	path, _ := args.Get("path")
 	if path == "" {
 		return "", fmt.Errorf("file extractor expect `path` args")

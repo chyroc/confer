@@ -1,4 +1,4 @@
-package internal
+package iface
 
 type KeyVal struct {
 	Key string

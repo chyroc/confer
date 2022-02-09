@@ -3,7 +3,7 @@ package extractor
 import (
 	"testing"
 
-	"github.com/chyroc/go-loader/internal"
+	"github.com/chyroc/go-loader/internal/iface"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,23 +16,23 @@ func Test_file(t *testing.T) {
 
 	tests := []struct {
 		name       string
-		args       []internal.KeyVal
+		args       []iface.KeyVal
 		want       string
 		errContain string
 	}{
-		{name: "ok-1", args: []internal.KeyVal{{"path", file1}}, want: "val-1"},
+		{name: "ok-1", args: []iface.KeyVal{{"path", file1}}, want: "val-1"},
 		// {name: "ok-2", args: []string{"b"}, want: ""},
 		// {name: "ok-3", args: []string{"b", "default=x"}, want: "x"},
 		// {name: "ok-4", args: []string{"b", "default = x"}, want: "x"},
 		// {name: "ok-5", args: []string{"b", "default = ' x '"}, want: " x "},
 
-		{name: "err-1", args: []internal.KeyVal{}, errContain: "file extractor expect `path` args"},
-		{name: "err-2", args: []internal.KeyVal{{"path", "a"}}, errContain: "open a: no such file or directory"},
+		{name: "err-1", args: []iface.KeyVal{}, errContain: "file extractor expect `path` args"},
+		{name: "err-2", args: []iface.KeyVal{{"path", "a"}}, errContain: "open a: no such file or directory"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := NewFile()
-			got, err := r.Extract(&internal.ExtractorReq{KeyVal: tt.args})
+			got, err := r.Extract(&iface.ExtractorReq{KeyVal: tt.args})
 			if tt.errContain != "" {
 				as.NotNil(err)
 				as.Empty(got)

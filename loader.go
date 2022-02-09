@@ -3,8 +3,8 @@ package loader
 import (
 	"fmt"
 
-	"github.com/chyroc/go-loader/internal"
 	"github.com/chyroc/go-loader/internal/extractor"
+	"github.com/chyroc/go-loader/internal/iface"
 	"github.com/chyroc/go-loader/internal/load"
 )
 
@@ -30,23 +30,15 @@ func Load(source interface{}, options ...Option) error {
 // Loader impl this package
 type Loader struct {
 	tagName      string
-	extractors   map[string]Extractor
-	transformers map[string]Transformer
+	extractors   map[string]iface.Extractor
+	transformers map[string]iface.Transformer
 }
 
 // Option config how Loader work
 type Option func(r *Loader) error
 
-type (
-	KeyVal         = internal.KeyVal
-	ExtractorReq   = internal.ExtractorReq
-	TransformerReq = internal.TransformerReq
-	Extractor      = internal.Extractor
-	Transformer    = internal.Transformer
-)
-
 // WithExtractor add extractor to Loader
-func WithExtractor(extractors ...Extractor) Option {
+func WithExtractor(extractors ...iface.Extractor) Option {
 	return func(r *Loader) error {
 		for _, v := range extractors {
 			if _, ok := r.extractors[v.Name()]; ok {
@@ -59,7 +51,7 @@ func WithExtractor(extractors ...Extractor) Option {
 }
 
 // WithTransform add transform to Loader
-func WithTransform(transfers ...Transformer) Option {
+func WithTransform(transfers ...iface.Transformer) Option {
 	return func(r *Loader) error {
 		for _, v := range transfers {
 			if _, ok := r.transformers[v.Name()]; ok {
@@ -77,8 +69,8 @@ func WithTransform(transfers ...Transformer) Option {
 func New(options ...Option) (*Loader, error) {
 	r := &Loader{
 		tagName:      "loader",
-		extractors:   map[string]Extractor{},
-		transformers: map[string]Transformer{},
+		extractors:   map[string]iface.Extractor{},
+		transformers: map[string]iface.Transformer{},
 	}
 	for _, v := range options {
 		if err := v(r); err != nil {
@@ -91,8 +83,8 @@ func New(options ...Option) (*Loader, error) {
 func (r *Loader) internalOption() *load.Option {
 	resp := &load.Option{
 		TagName:      r.tagName,
-		Extractors:   map[string]internal.Extractor{},
-		Transformers: map[string]internal.Transformer{},
+		Extractors:   map[string]iface.Extractor{},
+		Transformers: map[string]iface.Transformer{},
 	}
 
 	for k, v := range r.extractors {
