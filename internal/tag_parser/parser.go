@@ -1,5 +1,7 @@
 package tag_parser
 
+// some code copy from https://github.com/cloudwego/thriftgo (license: Apache-2.0 License)
+
 import (
 	"errors"
 	"fmt"

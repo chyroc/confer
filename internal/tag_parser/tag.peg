@@ -3,9 +3,7 @@ package tag_parser
 type TagParser Peg {
 }
 
-// https://github.com/cloudwego/thriftgo/blob/main/parser/thrift.peg
-// env,key=k;json,key=.key;required
-// env,key=val;;required
+// some code copy from https://github.com/cloudwego/thriftgo (license: Apache-2.0 License)
 
 Document <- Extractor ';' Transformer ';' Option /
             Extractor ';' Transformer /
