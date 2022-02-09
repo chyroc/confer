@@ -1,6 +1,8 @@
 github.com/chyroc/go-loader v0.8.0/go.mod h1:ogH6S58Ef4CZnIBdDXozg/z5WZGEZ3xrPSknASqKLbc=
 github.com/chyroc/go-loader/adapter/extractor_env v0.1.0 h1:oCAHAOjHYK7LMu3oXZuHmTIgZVVvsuA1DCc/jYneN80=
 github.com/chyroc/go-loader/adapter/extractor_env v0.1.0/go.mod h1:r0/RaP5I6Z6+WkvIRSKgSDRRzZjxGUUB7MwsjVmgcN4=
+github.com/chyroc/go-loader/adapter/extractor_file v0.2.0 h1:QmkWuHsubPRUmuHpfCAPfuRBFzN1sMwyccrRjNHnNNk=
+github.com/chyroc/go-loader/adapter/extractor_file v0.2.0/go.mod h1:E+P5/IMX2THB4hqWGmP7togcKlBFoiWP7YnpoHsrKAw=
 github.com/chyroc/go-ptr v1.5.1 h1:6rln+CX0u8xHxYQJe7RNHaveq8vTQ4ou+LnLVxStddI=
 github.com/chyroc/go-ptr v1.5.1/go.mod h1:8x4QPkggRrkpveFHzb27gxqvqf2/ebzNS741UsxlbSQ=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

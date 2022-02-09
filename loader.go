@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/chyroc/go-loader/adapter/extractor_env"
+	"github.com/chyroc/go-loader/adapter/extractor_file"
 	"github.com/chyroc/go-loader/iface"
 	"github.com/chyroc/go-loader/internal/load"
 )
