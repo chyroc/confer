@@ -1,5 +1,9 @@
 package iface
 
+import (
+	"reflect"
+)
+
 type KeyVal struct {
 	Key string
 	Val string
@@ -10,7 +14,8 @@ type ExtractorReq struct {
 }
 
 type TransformerReq struct {
-	KeyVal []KeyVal
+	FieldType reflect.StructField
+	KeyVal    []KeyVal
 }
 
 // Extractor define how to extract data from multi source

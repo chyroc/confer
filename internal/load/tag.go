@@ -22,16 +22,18 @@ func ParseTag(tag string) (*Tag, error) {
 		return nil, err
 	}
 	resp := new(Tag)
+
+	resp.extractorArgs = new(iface.ExtractorReq)
 	if res.Extractor != nil {
 		resp.extractorName = res.Extractor.Name
-		resp.extractorArgs = new(iface.ExtractorReq)
 		for _, v := range res.Extractor.Args {
 			resp.extractorArgs.KeyVal = append(resp.extractorArgs.KeyVal, iface.KeyVal{Key: v.Key, Val: v.Val})
 		}
 	}
+
+	resp.transformerArgs = new(iface.TransformerReq)
 	if res.Transformer != nil {
 		resp.transformerName = res.Transformer.Name
-		resp.transformerArgs = new(iface.TransformerReq)
 		for _, v := range res.Transformer.Args {
 			resp.transformerArgs.KeyVal = append(resp.transformerArgs.KeyVal, iface.KeyVal{Key: v.Key, Val: v.Val})
 		}

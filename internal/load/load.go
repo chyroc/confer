@@ -67,7 +67,10 @@ func Load(source interface{}, opt *Option) error {
 			if !ok {
 				return fmt.Errorf("%s transformers not found", tagConf.transformerName)
 			}
-			val, err := transfer.Transform(data, tagConf.transformerArgs)
+			val, err := transfer.Transform(data, &iface.TransformerReq{
+				FieldType: ft,
+				KeyVal:    tagConf.transformerArgs.KeyVal,
+			})
 			if err != nil {
 				if tagConf.Default != "" {
 					if err := helper.AssignValueToReflect(fv, reflect.ValueOf(tagConf.Default)); err != nil {
