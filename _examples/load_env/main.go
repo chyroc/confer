@@ -7,7 +7,7 @@ import (
 )
 
 type Conf struct {
-	GitHubToken string `loader:"env,key:GITHUB_TOKEN;;required"`
+	GitHubToken string `loader:"env,key=GITHUB_TOKEN;;required"`
 }
 
 func main() {
