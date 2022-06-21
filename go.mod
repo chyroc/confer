@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/chyroc/go-loader/adapter/extractor_env v0.1.0
 	github.com/chyroc/go-loader/adapter/extractor_file v0.2.0
-	github.com/stretchr/testify v1.7.2
+	github.com/stretchr/testify v1.7.3
 )
 
 require (
